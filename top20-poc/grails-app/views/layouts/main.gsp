@@ -27,11 +27,14 @@
 	</div>
 	
 		<g:link controller="artist">
-				Add artists
+				Artists
 			</g:link>
 			<br/>
 		<g:link controller="song">
-				Add songs
+				Songs
+			</g:link>
+		<g:link controller="song">
+				Tops
 			</g:link>
 	<g:hasErrors>
 	  <div class="alert alert-error">Please try submitting again</div>
