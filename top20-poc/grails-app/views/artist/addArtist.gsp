@@ -3,24 +3,18 @@
 		<meta name="layout" content="main"/>
 	</head>
     <body>
-         <g:form name="add" url="[action:'add',controller:'artist']">
+         <g:form name="add" url="[action:'add',controller:'song']">
          
-         	<g:renderErrors bean="${artist}" as="list" field="title"/>
+         	<g:renderErrors bean="${song}" as="list" field="title"/>
          
-	        <div class="addArtist">
+	        <div class="add">
 	        <ul>
 	        <li> 
 	        <div class="el">
-		         <span class="label"> Artist Name</span>
-		         <div class="value">    <input name="realName" maxlength="50"/ > 
+		         <span class="label"> Song Title</span>
+		         <div class="value">    <input name="title" maxlength="50"/ > 
 	         </div>
 	        </li>
-	        <li>  
-				 <div class="el">
-		         <span class="label"> Stage Name</span>
-		         <div class="value">  <input name="stageName" maxlength="50" /> 
-	         </div>
-			</li>
 	        </ul>
 	        <br/>
 	         <br/>

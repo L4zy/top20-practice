@@ -7,10 +7,11 @@ class Artist {
 	String realName;
 	
 	static hasMany = [songs: Song]
-
+	
 	static mapping = {
-		songs column: "ID", joinTable: false
-	  }
+		songs cascade: 'all-delete-orphan'
+	}
+
 	
 	static constraints = {
 		stageName(blank: false)
