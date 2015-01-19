@@ -4,10 +4,10 @@ import grails.test.mixin.TestFor
 import spock.lang.Specification
 
 /**
- * See the API for {@link grails.test.mixin.services.ServiceUnitTestMixin} for usage instructions
+ * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
  */
-@TestFor(SongService)
-class SongServiceSpec extends Specification {
+@TestFor(VoteController)
+class TopControllerSpec extends Specification {
 
     def setup() {
     }

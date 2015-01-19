@@ -3,27 +3,23 @@ package top20.poc
 import top20.entity.Artist
 
 class ArtistController {
-	
-	def scaffold = Artist
-
-	List<Artist> list = new ArrayList<Artist>();
-	static scope ="session"
-	static defaultAction = "initialize"
-
-	def initialize (){
-		render view:"/artist/addArtist";
-	}
-
-	def addAgain(){
-		render view:"/artist/addArtist";
-	}
-
-
+	//	def scaffold = Artist
+	static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+	static defaultAction = "list"
 	def artistService
-	def add(Artist artist) {
+
+	def createNew() {
+		render view:"/artist/addArtist";
+	}
+	
+	def list() {
+		respond artistService.list(), model:[artistCount: Artist.count()]
+	}
+	
+	def save(Artist artist) {
 		
 		if(artist.validate()){
-			artistService.addArtist(artist);
+			artistService.saveArtist(artist);
 		}else{
 			artist.errors.allErrors.each {
 				println it
@@ -32,7 +28,8 @@ class ArtistController {
 			render view:"/artist/addArtist",model:[artist:artist]
 		}
 		
-		redirect action: 'addAgain'
+		redirect action: 'list'
 		
 	}
+	
 }

@@ -23,7 +23,7 @@ hibernate {
 environments {
     development {
         dataSource {
-            dbCreate = "create" // one of 'create', 'create-drop', 'update', 'validate', ''
+            dbCreate = "update" // one of 'create', 'create-drop', 'update', 'validate', ''
             url = "jdbc:mysql://localhost/top20?useUnicode=yes&characterEncoding=UTF-8"
         }
     }

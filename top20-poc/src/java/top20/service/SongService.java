@@ -7,25 +7,25 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import top20.entity.Artist;
+import top20.entity.Song;
 
-@Service("artistService")
-public class ArtistService {
+@Service("songService")
+public class SongService {
 
 	@Autowired
 	SessionFactory sessionFactory;
 
-	public void saveArtist(Artist artist) {
+	public void saveSong(Song song) {
 
 		Session session = sessionFactory.getCurrentSession();
-		session.save(artist);
+		session.save(song);
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Artist> list() {
+	public List<Song> list() {
 
 		Session session = sessionFactory.getCurrentSession();
-		return session.createCriteria(Artist.class).list();
+		return session.createCriteria(Song.class).list();
 
 	}
 

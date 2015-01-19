@@ -26,13 +26,10 @@
 		<h1>TOP 20</h1>
 	</div>
 	
-		<g:link controller="artist">
-				Add artists
-			</g:link>
-			<br/>
-		<g:link controller="song">
-				Add songs
-			</g:link>
+		<g:link controller="artist" action="list">Artists</g:link><br/>
+		<g:link controller="song" action="list">Songs</g:link><br/>
+		<g:link controller="vote" action="list">Top</g:link>
+		
 	<g:hasErrors>
 	  <div class="alert alert-error">Please try submitting again</div>
 	    <g:eachError>
