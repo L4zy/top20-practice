@@ -31,6 +31,7 @@ class SongController {
 	}
 	
 	def list() {
-		respond Song.list(params), model:[songCount: Song.count()]
+		
+		respond Song.list(params), model:[songCount: Song.count(), voted : params.voted]
 	}
 }

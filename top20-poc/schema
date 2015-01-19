@@ -1,0 +1,48 @@
+
+    alter table song 
+        drop 
+        foreign key FK_9ibhcqu1mty885pr2gxrc1n92;
+
+    alter table vote 
+        drop 
+        foreign key FK_m7hv2b741r2h7np4de5e3wykj;
+
+    drop table if exists artist;
+
+    drop table if exists song;
+
+    drop table if exists vote;
+
+    create table artist (
+        id bigint not null auto_increment,
+        version bigint not null,
+        real_name varchar(255) not null,
+        stage_name varchar(255) not null,
+        primary key (id)
+    );
+
+    create table song (
+        id bigint not null auto_increment,
+        version bigint not null,
+        artist_id bigint not null,
+        name varchar(255) not null,
+        primary key (id)
+    );
+
+    create table vote (
+        id bigint not null auto_increment,
+        version bigint not null,
+        song_id bigint not null,
+        vot_date datetime not null,
+        primary key (id)
+    );
+
+    alter table song 
+        add constraint FK_9ibhcqu1mty885pr2gxrc1n92 
+        foreign key (artist_id) 
+        references artist (id);
+
+    alter table vote 
+        add constraint FK_m7hv2b741r2h7np4de5e3wykj 
+        foreign key (song_id) 
+        references song (id);

@@ -6,6 +6,13 @@
 <meta name="layout" content="main" />
 </head>
 <body>
+
+	<g:if test="${voted != null}">
+		<div>
+			Successful voted for
+			${voted}
+		</div>
+	</g:if>
 	<table>
 		<g:each in="${songInstanceList}" status="i" var="songInstance">
 			<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
@@ -17,14 +24,13 @@
 				<td>
 					${fieldValue(bean: songInstance?.artist, field: "stageName")}
 				</td>
-				
+
 				<td>
 					${votsCount}
 				</td>
-				
-				<td>
-					<g:link controller="vote" action="vote" params="['song.id': songInstance?.id]">Vote</g:link>
-				</td>
+
+				<td><g:link controller="vote" action="vote"
+						params="['song.id': songInstance?.id]">Vote</g:link></td>
 
 			</tr>
 		</g:each>

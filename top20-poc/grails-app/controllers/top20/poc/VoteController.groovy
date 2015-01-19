@@ -14,7 +14,7 @@ class VoteController {
 		Vote vote = new Vote(params);
 		voteService.saveVote(vote);
 		
-		redirect(controller: "song", action: "list");
+		redirect(controller: "song", action: "list", params:['voted': vote.song?.name]);
 	}
 	
 }
