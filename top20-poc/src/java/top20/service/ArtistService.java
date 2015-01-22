@@ -28,5 +28,21 @@ public class ArtistService {
 		return session.createCriteria(Artist.class).list();
 
 	}
+	
+	
+	public void update(Artist artist) {
+
+		Session session = sessionFactory.getCurrentSession();
+		session.update(artist);
+		session.flush();
+	}
+
+	
+	public void delete(Artist artist) {
+
+		Session session = sessionFactory.getCurrentSession();
+		session.delete(artist);
+		session.flush();
+	}
 
 }

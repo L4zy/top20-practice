@@ -28,5 +28,20 @@ public class SongService {
 		return session.createCriteria(Song.class).list();
 
 	}
+	
+	public void update(Song song) {
+
+		Session session = sessionFactory.getCurrentSession();
+		session.update(song);
+		session.flush();
+	}
+
+	
+	public void delete(Song song) {
+
+		Session session = sessionFactory.getCurrentSession();
+		session.delete(song);
+		session.flush();
+	}
 
 }

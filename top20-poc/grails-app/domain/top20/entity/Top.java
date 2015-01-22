@@ -1,8 +1,10 @@
 package top20.entity;
 
+import java.util.List;
+
 public class Top {
-	Artist artistOfTheWeek;
-	Song songOfTheWeek;
-	Artist mostPopulatArtist;
-	Song mostPopulatSong;
+	List<TopArtistDto> artistOfTheWeek;
+	List<TopSongDto> songOfTheWeek;
+	List<TopArtistDto> mostPopulatArtist;
+	List<TopSongDto> mostPopulatSong;
 }

@@ -17,4 +17,8 @@ class Artist {
 		stageName(blank: false)
 		realName(blank: false)
 	}
+	
+	public String toString(){
+		return stageName;
+	}
 }

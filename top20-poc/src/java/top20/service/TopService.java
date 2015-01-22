@@ -10,11 +10,13 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import top20.entity.Artist;
-import top20.entity.Song;
+import top20.entity.TopArtistDto;
+import top20.entity.TopSongDto;
 import top20.util.DateUtil;
 
 @Service("topService")
@@ -23,8 +25,8 @@ public class TopService {
 	@Autowired
 	SessionFactory sessionFactory;
 
-	@SuppressWarnings("rawtypes")
-	public Artist artistOfTheWeek() {
+	@SuppressWarnings({ "unchecked" })
+	public List<TopArtistDto> artistOfTheWeek() {
 
 		Session session = sessionFactory.getCurrentSession();
 
@@ -37,28 +39,23 @@ public class TopService {
 		cr.createAlias("song.vots", "vote");
 		cr.setProjection(Projections
 				.projectionList()
-				.add(Projections.property("realName"), "Real Name")
-				.add(Projections.property("stageName"), "Stage Name")
-				.add(Projections.alias(Projections.count("artist.id"), "rCount"))
+				.add(Projections.property("stageName"), "artist")
+				.add(Projections.alias(Projections.count("artist.id"),
+						"votCount"))
 				.add(Projections.alias(Projections.groupProperty("artist.id"),
-						"Artist Id")));
+						"artistId")));
 		cr.add(Restrictions.ge("vote.votDate", startDate));
 		cr.add(Restrictions.le("vote.votDate", endDate));
-		cr.addOrder(Order.desc("rCount")).setMaxResults(1);
+		cr.addOrder(Order.desc("votCount"))
+				.setMaxResults(5)
+				.setResultTransformer(
+						Transformers.aliasToBean(TopArtistDto.class));
 
-		List result = cr.list();
-		Artist artist = new Artist();
-		if (result.size() == 1) {
-			Object[] o = (Object[]) result.get(0);
-			artist.setRealName((String) o[0]);
-			artist.setStageName((String) o[1]);
-		}
-
-		return artist;
+		return cr.list();
 	}
 
-	@SuppressWarnings("rawtypes")
-	public Song songOfTheWeek() {
+	@SuppressWarnings("unchecked")
+	public List<TopSongDto> songOfTheWeek() {
 
 		Session session = sessionFactory.getCurrentSession();
 
@@ -66,26 +63,17 @@ public class TopService {
 		Date endDate = DateUtil.getLastDayOfLastWeek();
 		Query q = session
 				.createQuery(
-						"select s.name , count (v.song) as rCount FROM Song As s INNER JOIN s.vots v WHERE v.votDate BETWEEN :stDate AND :edDate GROUP BY v.song ORDER BY rCount DESC")
-				.setMaxResults(1);
+						"select s.name as song , count (v.song) as votCount FROM Song As s INNER JOIN s.vots v WHERE v.votDate BETWEEN :stDate AND :edDate GROUP BY v.song ORDER BY votCount DESC")
+				.setMaxResults(5)
+				.setResultTransformer(
+						Transformers.aliasToBean(TopArtistDto.class));
 		q.setParameter("stDate", startDate).setParameter("edDate", endDate);
-		
-		List restultList = q.list();
-		if (restultList.size() == 0) {
-			return null;
-		}
-		Song s = new Song();
-		Object restult = restultList.get(0);
-		if (restult instanceof Object[]) {
-			Object[] o2 = (Object[]) restult;
-			System.out.println((String) o2[0]);
-			s.setName((String) o2[0]);
-		}
-		return s;
+
+		return q.list();
 	}
 
-	@SuppressWarnings("rawtypes")
-	public Artist mostPopulatArtist() {
+	@SuppressWarnings("unchecked")
+	public List<TopArtistDto> mostPopulatArtist() {
 
 		Session session = sessionFactory.getCurrentSession();
 
@@ -95,40 +83,31 @@ public class TopService {
 		cr.createAlias("song.vots", "vote");
 		cr.setProjection(Projections
 				.projectionList()
-				.add(Projections.property("realName"), "Real Name")
-				.add(Projections.property("stageName"), "Stage Name")
-				.add(Projections.alias(Projections.count("artist.id"), "rCount"))
+				.add(Projections.property("stageName"), "artist")
+				.add(Projections.alias(Projections.count("artist.id"),
+						"votCount"))
 				.add(Projections.alias(Projections.groupProperty("artist.id"),
-						"Artist Id")));
-		cr.addOrder(Order.desc("rCount")).setMaxResults(1);
+						"artistId")));
+		cr.addOrder(Order.desc("votCount"))
+				.setMaxResults(5)
+				.setResultTransformer(
+						Transformers.aliasToBean(TopArtistDto.class));
 
-		List result = cr.list();
-		Artist artist = new Artist();
-		if (result.size() == 1) {
-			Object[] o = (Object[]) result.get(0);
-			artist.setRealName((String) o[0]);
-			artist.setStageName((String) o[1]);
-		}
-
-		return artist;
+		return cr.list();
 	}
 
-	public Song mostPopulatSong() {
+	@SuppressWarnings("unchecked")
+	public List<TopSongDto> mostPopulatSong() {
 
 		Session session = sessionFactory.getCurrentSession();
 
 		Query q = session
 				.createQuery(
-						"select s.name , count (v.song) as rCount FROM Song As s INNER JOIN s.vots v GROUP BY v.song ORDER BY rCount DESC")
-				.setMaxResults(1);
-		Object restult = q.list().get(0);
-		Song s = new Song();
-
-		if (restult instanceof Object[]) {
-			Object[] o2 = (Object[]) restult;
-			s.setName((String) o2[0]);
-		}
-		return s;
+						"select s.name as song , count (v.song) as votCount FROM Song As s INNER JOIN s.vots v GROUP BY v.song ORDER BY votCount DESC")
+				.setMaxResults(5)
+				.setResultTransformer(
+						Transformers.aliasToBean(TopSongDto.class));
+		return q.list();
 	}
 
 }

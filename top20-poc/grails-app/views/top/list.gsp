@@ -11,19 +11,22 @@
 		<div>
 			The most popular artist
 		</div>
-		<div>
-			${top?.mostPopulatArtist?.stageName}  ${top?.mostPopulatArtist?.realName}
-		</div>
+		<ul>
+		<g:each in="${top?.mostPopulatArtist}" status="i" var="topArtist">
+			<li>${topArtist?.artist}</li>
+		</g:each>
+		</ul>
 	</g:if>
 
 	<g:if test="${top?.mostPopulatSong != null}">
-
 		<div>
 			The most popular song
 		</div>
-		<div>
-			${top?.mostPopulatSong?.name}
-		</div>
+		<ul>
+		<g:each in="${top?.mostPopulatSong}" status="i" var="topSong">
+			<li>${topSong?.song}</li>
+		</g:each>
+		</ul>
 	</g:if>
 
 	<g:if test="${top?.artistOfTheWeek != null}">
