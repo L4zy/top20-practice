@@ -1,5 +1,6 @@
 package top20.service;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -30,8 +31,10 @@ public class TopService {
 
 		Session session = sessionFactory.getCurrentSession();
 
-		Date startDate = DateUtil.getFirstDayOfLastWeek();
-		Date endDate = DateUtil.getLastDayOfLastWeek();
+		Date today = Calendar.getInstance().getTime();
+		
+		Date startDate = DateUtil.getFirstDayOfPreviouseWeek(today);
+		Date endDate = DateUtil.getLastDayOfPreviouseWeek(today);
 
 		Criteria cr = session.createCriteria(Artist.class, "artist");
 
@@ -59,8 +62,10 @@ public class TopService {
 
 		Session session = sessionFactory.getCurrentSession();
 
-		Date startDate = DateUtil.getFirstDayOfLastWeek();
-		Date endDate = DateUtil.getLastDayOfLastWeek();
+		Date today = Calendar.getInstance().getTime();
+		
+		Date startDate = DateUtil.getFirstDayOfPreviouseWeek(today);
+		Date endDate = DateUtil.getLastDayOfPreviouseWeek(today);
 		Query q = session
 				.createQuery(
 						"select s.name as song , count (v.song) as votCount FROM Song As s INNER JOIN s.vots v WHERE v.votDate BETWEEN :stDate AND :edDate GROUP BY v.song ORDER BY votCount DESC")

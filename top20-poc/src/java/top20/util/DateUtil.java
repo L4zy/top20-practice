@@ -5,17 +5,18 @@ import java.util.Date;
 
 public class DateUtil {
 
-	public static Date getFirstDayOfLastWeek() {
+	public static Date getFirstDayOfPreviouseWeek(Date date) {
 		Calendar c = Calendar.getInstance();
+		c.setTime(date);
 		c.add(Calendar.WEEK_OF_YEAR, -1);
 		c.set(Calendar.DAY_OF_WEEK, c.getFirstDayOfWeek());
 		return c.getTime();
 	}
 
-	public static Date getLastDayOfLastWeek() {
+	public static Date getLastDayOfPreviouseWeek(Date date) {
 		Calendar c = Calendar.getInstance();
-		c.setTime(getFirstDayOfLastWeek());
-		c.add(Calendar.DATE, 6);
+		c.setTime(getFirstDayOfPreviouseWeek(date));
+		c.add(Calendar.DATE, 7);
 		return c.getTime();
 	}
 }

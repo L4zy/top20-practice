@@ -1,42 +1,30 @@
 package top20.util;
 
-import java.util.Calendar;
+import static org.junit.Assert.assertEquals;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 public class DateUtilTest {
 
-	
-	
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
 	@Test
-	public void testgetFirstDayOfLastWeek(){
-		Date date= DateUtil.getFirstDayOfLastWeek();
-		
-		Calendar calendar= Calendar.getInstance();
-		calendar.setTime(date);
-		//first day of the week
-		Assert.assertEquals(1, calendar.get(Calendar.DAY_OF_WEEK));
-		
-		//test is last week
-		Assert.assertEquals(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) - 1, calendar.get(Calendar.WEEK_OF_YEAR));
-		
+	public void testgetFirstDayOfLastWeek() throws ParseException {
+		Date today = sdf.parse("2015-01-26");
+		Date date = DateUtil.getFirstDayOfPreviouseWeek(today);
+		assertEquals("Invalid date returned", "2015-01-18", sdf.format(date));
+
 	}
-	
-	
+
 	@Test
-	public void testgetLastDayOfLastWeek(){
-		
-		Date date= DateUtil.getLastDayOfLastWeek();
-		
-		Calendar calendar= Calendar.getInstance();
-		calendar.setTime(date);
-		
-		//last day of the week
-		Assert.assertEquals(7, calendar.get(Calendar.DAY_OF_WEEK));
-		//test is last week
-		Assert.assertEquals(Calendar.getInstance().get(Calendar.WEEK_OF_YEAR) - 1, calendar.get(Calendar.WEEK_OF_YEAR));
-		
+	public void testgetLastDayOfLastWeek() throws ParseException {
+		Date today = sdf.parse("2015-01-26");
+		Date date = DateUtil.getLastDayOfPreviouseWeek(today);
+		assertEquals("Invalid date returned", "2015-01-25", sdf.format(date));
+
 	}
 }

@@ -14,12 +14,13 @@ class ArtistController {
 	}
 
 	def list() {
-		respond artistService.list(), model:[artistCount: Artist.count()]
+		List<Artist> artists = artistService.list();
+		respond artists, model:[artistCount: artists.size()]
 	}
 
-	def save(Artist artist) {
+	def saveArtist(Artist artist) {
 
-		if(artist.validate()){
+		if(artist != null && artist.validate()){
 			artistService.saveArtist(artist);
 		}else{
 			artist.errors.allErrors.each { println it }

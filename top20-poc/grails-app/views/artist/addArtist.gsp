@@ -3,7 +3,7 @@
 <meta name="layout" content="main" />
 </head>
 <body>
-	<g:form name="add" url="[action:'save',controller:'artist']">
+	<g:form name="add" url="[action:'saveArtist',controller:'artist']">
 
 		<g:renderErrors bean="${song}" as="list" field="title" />
 
