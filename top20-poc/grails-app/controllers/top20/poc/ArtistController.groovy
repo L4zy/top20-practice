@@ -3,7 +3,7 @@ package top20.poc
 import top20.entity.Artist
 
 class ArtistController {
-	
+
 	def scaffold = Artist
 	static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 	static defaultAction = "list"
@@ -31,31 +31,37 @@ class ArtistController {
 
 		redirect action: 'list'
 	}
-	
+
 	def show(Artist artist) {
 		respond artist
 	}
-	
+
 	def edit(Artist artistInstance) {
 		respond artistInstance
 	}
 
 	def update(Artist artist) {
 
-		if (artist == null || !artist.validate()) {
+		if(artist == null ){
+			redirect action: 'list'
+			return;
+		}
+
+		if ( !artist.validate()) {
 			respond artist.errors, view:'edit'
 			return
 		}
 
 		artistService.update(artist);
-		
+
 		redirect action: 'list'
 	}
 
 	def delete(Artist artist) {
-		artistService.delete(artist);
-		
+		if(artist){
+			artistService.delete(artist);
+		}
+
 		redirect action: 'list'
 	}
-	
 }

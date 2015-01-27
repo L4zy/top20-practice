@@ -83,15 +83,52 @@ class ArtistControllerSpec extends Specification {
 	}
 	
 	
-	void "test update: invalid"() {
-		given:
-		Artist art = new Artist([stageName:"test", realName:""]).save();
+	void "test update: null"() {
 
 		when:
-		request.method = 'POST'
+		request.method = 'PUT'
+		controller.update(null);
+
+		then:
+		response.redirectedUrl == '/artist/list'
+	}
+	
+	void "test update: invalid"() {
+		given:
+		Artist art = new Artist([stageName:"test", realName:""]);
+
+		when:
+		request.method = 'PUT'
 		controller.update(art);
 
 		then:
-		view == '/artist/edit'
+		view == 'edit'
+	}
+	
+	
+	void "test delete: invalid"() {
+		
+		when:
+		request.method = 'DELETE'
+		controller.delete(null);
+
+		then:
+		response.redirectedUrl == '/artist/list'
+	}
+	
+	void "test delete: valid"() {
+		given:
+		Artist art = new Artist([stageName:"test", realName:""])
+		art.save();
+		def calls = 0;
+		mockService.demand.delete(1) { artParam -> if(art == artParam) calls ++; }
+		
+		when:
+		request.method = 'DELETE'
+		controller.delete(art);
+
+		then:
+		response.redirectedUrl == '/artist/list'
+		calls == 1
 	}
 }
