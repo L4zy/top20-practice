@@ -11,7 +11,7 @@ import top20.service.ArtistService
  * See the API for {@link grails.test.mixin.web.ControllerUnitTestMixin} for usage instructions
  */
 @TestFor(ArtistController)
-@Mock(Artist)
+@Mock([Artist])
 class ArtistControllerSpec extends Specification {
 
 	def mockService;
@@ -34,28 +34,43 @@ class ArtistControllerSpec extends Specification {
 
 	void "test list"() {
 		given:
-		mockService.demand.list() { -> return [new Artist()]}
+		Artist artist = new Artist();
+		mockService.demand.list() { -> return [artist]}
 
 		when:
 		controller.list();
 
 		then:
 		model.artistCount == 1;
-		model.artistInstanceList != null;
+		model.artistInstanceList == [artist];
 	}
 
-	void "test save"() {
+	void "test save : valid"() {
 		given:
 		Artist art = new Artist([stageName:"test", realName:"test"]);
 		mockService.demand.saveArtist(_) { ->}
-		
+
 		when:
-		controller.saveArtist(art);
+		request.method = 'POST'
+		controller.save(art);
 
 		then:
 		response.redirectedUrl == "/artist/list";
 	}
-	
+
+	void "test save : invalid"() {
+		given:
+		Artist art = new Artist([stageName:"test", realName:""]);
+
+		when:
+		request.method = 'POST'
+		controller.save(art);
+
+		then:
+		view == '/artist/addArtist'
+		model.artist == art
+	}
+
 	void "test show"() {
 		given:
 		Artist art = new Artist()
@@ -65,5 +80,18 @@ class ArtistControllerSpec extends Specification {
 
 		then:
 		model.artistInstance == art;
+	}
+	
+	
+	void "test update: invalid"() {
+		given:
+		Artist art = new Artist([stageName:"test", realName:""]).save();
+
+		when:
+		request.method = 'POST'
+		controller.update(art);
+
+		then:
+		view == '/artist/edit'
 	}
 }

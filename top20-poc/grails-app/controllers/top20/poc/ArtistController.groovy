@@ -18,7 +18,7 @@ class ArtistController {
 		respond artists, model:[artistCount: artists.size()]
 	}
 
-	def saveArtist(Artist artist) {
+	def save(Artist artist) {
 
 		if(artist != null && artist.validate()){
 			artistService.saveArtist(artist);
@@ -26,6 +26,7 @@ class ArtistController {
 			artist.errors.allErrors.each { println it }
 
 			render view:"/artist/addArtist",model:[artist:artist]
+			return
 		}
 
 		redirect action: 'list'
@@ -41,7 +42,7 @@ class ArtistController {
 
 	def update(Artist artist) {
 
-		if (artist == null || artist.hasErrors()) {
+		if (artist == null || !artist.validate()) {
 			respond artist.errors, view:'edit'
 			return
 		}
